@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">React</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="create_account">Don\'t have an account? Click here to register</string>
+    <string name="login">Login</string>
+</resources>
