@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DrawerLayout allows for a frame and a floater which creates a drawer.
+     android:id defines the name of the object
+     android:layout_gravity positions the View with respect to its parent; "start" = left justified, "end" = right justified. -->
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
+    android:background="@color/colorPrimaryDark">
+
+    <!-- FrameLayout is the frame in which the floating ListView will reside. This must be created first! -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_holder">
+    </FrameLayout>
+
+    <!-- ListView will contain the tabs which point to fragments. -->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_list"
+        android:background="@color/colorPrimaryDark"
+        android:layout_gravity="start" />
+</android.support.v4.widget.DrawerLayout>

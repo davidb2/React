@@ -2,6 +2,7 @@ package com.example.brewc.react.main.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.brewc.react.R;
@@ -39,6 +41,7 @@ public class LoginPageActivity extends AppCompatActivity {
 
     private AppCompatButton _loginButton;
     private EditText _inputEmail, _inputPassword;
+    private TextView _linkRegister;
 
     public FirebaseAuth _auth;
     private FirebaseAuth.AuthStateListener _authListener;
@@ -62,7 +65,7 @@ public class LoginPageActivity extends AppCompatActivity {
         _loginButton = (AppCompatButton) findViewById(R.id.btn_login);
         _inputEmail = (EditText) findViewById(R.id.input_email);
         _inputPassword = (EditText) findViewById(R.id.input_password);
-
+        _linkRegister = (TextView) findViewById(R.id.link_register);
         // https://firebase.google.com/docs/auth/android/password-auth
         _authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -77,6 +80,7 @@ public class LoginPageActivity extends AppCompatActivity {
                 }
             }
         };
+
 
     }
 
@@ -123,8 +127,16 @@ public class LoginPageActivity extends AppCompatActivity {
                 login();
             }
         });
+        _linkRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent registrationPage = new Intent(LoginPageActivity.this, RegisterPageActivity.class);
+                startActivity(registrationPage);
+            }
+        });
         _auth.addAuthStateListener(_authListener);
-
+        _inputEmail.setFocusable(true);
+        _inputPassword.setFocusable(true);
     }
 
     @Override
@@ -137,16 +149,22 @@ public class LoginPageActivity extends AppCompatActivity {
     }
 
     // implementation of this: http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/
+
+    /**
+     * attempts to login the user
+     */
     private void login() {
         // use basic email patterns
         if (!safetyCheck()) {
             onLoginFail();
             return;
         }
-
         new LoginTask(this).execute();
     }
 
+    /**
+     * if the login fails
+     */
     private void onLoginFail() {
         Toast.makeText(getBaseContext(), "Invalid Credentials", Toast.LENGTH_LONG).show();
         Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
@@ -154,11 +172,19 @@ public class LoginPageActivity extends AppCompatActivity {
         Log.v("", "Login Failure :(");
     }
 
+    /**
+     * if the login was successful
+     */
     private void onLoginSuccess() {
         Log.v("", "Login Success!");
-        // TODO: redirect to home page
+        Intent homePage = new Intent(LoginPageActivity.this, DrawerActivity.class);
+        startActivity(homePage);
     }
 
+    /**
+     * checks the validity of the email
+     * @return true if the email address is valid
+     */
     private boolean safetyCheck() {
         String email = getEmail();
 
@@ -182,23 +208,22 @@ public class LoginPageActivity extends AppCompatActivity {
         this._loginButton.setEnabled(nonEmptyInputEmail && nonEmptyInputPassword);
     }
 
+    /**
+     * @return
+     */
     private String getPassword() {
-        String password = _inputPassword.getText().toString();
-        return password;
+        return _inputPassword.getText().toString();
     }
 
     private String getEmail() {
-        String email = _inputEmail.getText().toString();
-        return email;
+        return _inputEmail.getText().toString();
     }
 
-    public class LoginTask extends AsyncTask<Void, Void, Void> {
+    private class LoginTask extends AsyncTask<Void, Void, Void> {
         private ProgressDialog progressDialog;
-        private Context context;
         private final int SLEEP_TIME = 500;
 
-        public LoginTask(LoginPageActivity loginPageActivity) {
-            context = loginPageActivity;
+        LoginTask(LoginPageActivity loginPageActivity) {
             progressDialog = new ProgressDialog(loginPageActivity);
         }
 
@@ -210,14 +235,14 @@ public class LoginPageActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            Thread thread = new Thread(new Runnable() {
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         Thread.sleep(SLEEP_TIME);
                         progressDialog.show();
                     } catch (Exception exception) {
-
+                        Log.e(TAG, "Could not initiate progress dialog");
                     }
                 }
             });

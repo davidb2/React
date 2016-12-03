@@ -32,6 +32,11 @@ dependencies {
 
     // nice design
     compile 'com.android.support:design:23.2.0'
+
+    // face api
+    compile 'com.microsoft.projectoxford:face:1.0.0'
+
+    // unit testing
     testCompile 'junit:junit:4.12'
 }
 
