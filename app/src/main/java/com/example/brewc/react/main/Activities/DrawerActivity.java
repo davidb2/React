@@ -1,5 +1,6 @@
 package com.example.brewc.react.main.Activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.example.brewc.react.R;
@@ -25,6 +28,8 @@ import com.example.brewc.react.main.Fragments.HomePageFragment;
 import com.example.brewc.react.main.Fragments.ReactPageFragment;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Drawer
@@ -42,6 +47,7 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_layout);
+
 
         this._drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         this._navList = (ListView) findViewById(R.id.nav_list);
@@ -83,6 +89,8 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
         this._fragmentTransaction.replace(R.id.fragment_holder, fragment);
         this._fragmentTransaction.commit();
         this.getSupportActionBar().setTitle(fragmentName);
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow((findViewById(R.id.fragment_holder)).getWindowToken(), 0);
     }
 
     private void loadSelection(int choice) {

@@ -303,6 +303,7 @@ public class RegisterPageActivity extends AppCompatActivity {
         String phoneNumber = _inputPhoneNumber.getText().toString();
         Face details = this._face;
         User newUser = new User(email, userID, name, details, phoneNumber, BitmapUtilities.bitmapToBase64(this._profilePic));
+        newUser.addContact();
         _rootReference.child(USERS).child(userID).setValue(newUser);
     }
 
