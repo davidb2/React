@@ -68,7 +68,6 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
         this._navList.setAdapter(adapter);
         this._navList.setOnItemClickListener(this);
 
-        // TODO: change this!!!
         this._actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, this._drawerLayout, R.string.open_drawer, R.string.close_drawer);
         this._drawerLayout.addDrawerListener(this._actionBarDrawerToggle);

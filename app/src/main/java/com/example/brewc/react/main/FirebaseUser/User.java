@@ -15,7 +15,9 @@ public class User {
     private String email, userID, displayName, phoneNumber, profilePicture, bio;
     private Face details;
     private ArrayList<Face> database;
-    private ArrayList<User> contacts;
+    private ArrayList<String> contacts;
+
+    public User() {}
 
     public User(String email,
                 String userID,
@@ -28,7 +30,7 @@ public class User {
         this.displayName = displayName.trim();
         this.details = details;
         this.database = new ArrayList<Face>();
-        this.contacts = new ArrayList<User>();
+        this.contacts = new ArrayList<String>();
         this.phoneNumber = phoneNumber.trim().replaceAll("[^0-9]", "");
         this.profilePicture = profliePicture;
         this.bio = "";
@@ -54,7 +56,7 @@ public class User {
         return this.database;
     }
 
-    public ArrayList<User> getContacts() {
+    public ArrayList<String> getContacts() {
         return this.contacts;
     }
 
@@ -70,14 +72,11 @@ public class User {
         return this.bio;
     }
 
+    public void setBio(String message) {
+        this.bio = message;
+    }
+
     public void addContact() {
-        this.contacts.add(new User(
-                "example@gmail.com",
-                "fasdlkfjs;dlkf",
-                "Sean Combs",
-                null,
-                "4352432523",
-                "faslkfj;dslkfj;kds;"
-        ));
+        this.contacts.add("DvMzHKD0fdbjAVUCw9a5XJZEeYb2");
     }
 }
