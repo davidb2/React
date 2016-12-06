@@ -17,6 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -36,6 +37,10 @@ dependencies {
 
     // face api
     compile 'com.microsoft.projectoxford:face:1.0.0'
+
+    // http
+    compile 'org.apache.httpcomponents:httpmime:4.3.5'
+    compile 'org.apache.httpcomponents:httpclient:4.3.5'
 
     // unit testing
     testCompile 'junit:junit:4.12'

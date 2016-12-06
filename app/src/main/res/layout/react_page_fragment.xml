@@ -57,12 +57,29 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:text="@string/default_name"
-            android:background="@color/colorAccent"
+            android:background="#9E9E9E"
             android:elevation="5dp"
             android:textSize="24sp"
             android:shadowRadius="20"
             android:padding="2dp"
             android:gravity="center"
+            android:shadowColor="@color/colorPrimaryDark" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:textAlignment="center"
+            android:background="#9E9E9E"
+            android:elevation="5dp"
+            android:textSize="24sp"
+            android:shadowRadius="20"
+            android:padding="2dp"
+            android:gravity="left"
             android:shadowColor="@color/colorPrimaryDark" />
     </LinearLayout>
 </RelativeLayout>

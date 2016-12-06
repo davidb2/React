@@ -247,7 +247,6 @@ public class RegisterPageActivity extends AppCompatActivity {
                     Toast.makeText(RegisterPageActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                     onCreateAccountFailure();
                 } else {
-                    onCreateAccountSuccess();
                     createAccount();
                 }
             }
@@ -275,6 +274,11 @@ public class RegisterPageActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && resultCode == RESULT_OK) {
@@ -290,7 +294,8 @@ public class RegisterPageActivity extends AppCompatActivity {
     }
 
     private void onCreateAccountSuccess() {
-        // go to login page
+        // logout
+        FirebaseAuth.getInstance().signOut();
         Intent loginPage = new Intent(RegisterPageActivity.this, LoginPageActivity.class);
         startActivity(loginPage);
     }
@@ -298,7 +303,7 @@ public class RegisterPageActivity extends AppCompatActivity {
     private void createAccount() {
         // something was wrong with the picture
         if (this._face == null) {
-            // Toast.makeText(getApplicationContext(), "invalid face", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "invalid face", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -310,8 +315,6 @@ public class RegisterPageActivity extends AppCompatActivity {
         String phoneNumber = _inputPhoneNumber.getText().toString();
         Face details = this._face;
         this._newUser = new User(email, userID, name, details, phoneNumber, BitmapUtilities.bitmapToBase64(this._profilePic));
-        _newUser.addContact();
-        _newUser.addFaceToDatabase(_newUser.getProfilePicture(), _newUser.getDetails());
         createPersonGroup(_newUser);
     }
 
@@ -405,6 +408,12 @@ public class RegisterPageActivity extends AppCompatActivity {
                             exception.printStackTrace();
                         }
                         return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+                        onCreateAccountSuccess();
                     }
                 };
         asyncTask.execute();

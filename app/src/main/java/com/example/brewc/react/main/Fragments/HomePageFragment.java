@@ -148,6 +148,9 @@ public class HomePageFragment extends Fragment {
         this._userProfilePicRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot == null || dataSnapshot.getValue(String.class) == null) {
+                    return;
+                }
                 _userProfilePic.setImageBitmap(
                         BitmapUtilities.base64ToBitmap(dataSnapshot.getValue(String.class))
                 );
