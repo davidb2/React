@@ -44,7 +44,6 @@ public class ContactsPageFragment extends Fragment {
     private ListView _listView;
     private List<SimplifiedUser> _contacts;
     private UserAdapter _userAdapter;
-
     private FirebaseAuth _auth;
     private FirebaseUser _user;
     private DatabaseReference _rootReference;
@@ -86,6 +85,7 @@ public class ContactsPageFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 SimplifiedUser simplifiedUser = (SimplifiedUser) _listView.getItemAtPosition(position);
                 String phoneNumber = simplifiedUser.getPhoneNumber();
+
                 // copy password to clipboard
                 ClipboardManager clipboard =
                         (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -121,6 +121,10 @@ public class ContactsPageFragment extends Fragment {
         });
     }
 
+    /**
+     * add contacts to ArrayList
+     * @param ids user ids
+     */
     private void getUsersFromIds(List<String> ids) {
         DatabaseReference[] dbrs = new DatabaseReference[ids.size()];
         for (int i = 0; i < dbrs.length; i++) {
@@ -142,6 +146,11 @@ public class ContactsPageFragment extends Fragment {
         }
     }
 
+    /**
+     * extracts data from generic map
+     * @param objectMap generic map
+     * @return a simplified user
+     */
     private SimplifiedUser objectToSimplifiedUser(Map<String, Object> objectMap) {
         String name = (String) objectMap.get("displayName");
         String phoneNumber = (String) objectMap.get("phoneNumber");

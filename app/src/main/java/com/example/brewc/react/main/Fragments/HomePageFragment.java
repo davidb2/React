@@ -36,22 +36,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomePageFragment extends Fragment {
     private final String TAG = this.getTag();
-
     private TextView _userProfileName, _userProfileBio;
     private EditText _inputName, _inputBio;
     private CircleImageView _userProfilePic;
-
-
     private FirebaseAuth _auth;
     private FirebaseUser _user;
     private DatabaseReference _rootReference;
     private DatabaseReference _userProfileNameRef;
     private DatabaseReference _userProfileBioRef;
     private DatabaseReference _userProfilePicRef;
-
-
-
-
 
     public HomePageFragment() {
         // nothing
@@ -115,8 +108,6 @@ public class HomePageFragment extends Fragment {
         super.onDetach();
 
     }
-
-
 
     private void setDefaults() {
         Log.v(TAG, "setting defaults");

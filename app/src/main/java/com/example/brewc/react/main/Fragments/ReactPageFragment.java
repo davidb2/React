@@ -419,7 +419,6 @@ public class ReactPageFragment extends Fragment {
         this._score.setText("");
     }
 
-
     private void waitForOtherUser(final String matchmakerKey) {
         this._inFirst = true;
         final DatabaseReference roomReference = this._roomsReference.child(matchmakerKey);
