@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Custom User Adapter
+ * Custom User Adapter for contacts
  */
 
 public class UserAdapter extends ArrayAdapter<SimplifiedUser> {

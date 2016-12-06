@@ -37,13 +37,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Drawer
+ * Drawer, stores tabs
  */
 
 public class DrawerActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     private final int HOME_POS = 0;
-
     private FirebaseAuth _auth;
     private ActionBarDrawerToggle _actionBarDrawerToggle;
     private DrawerLayout _drawerLayout;
@@ -59,6 +58,7 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
 
         _auth = FirebaseAuth.getInstance();
 
+        // create the list view
         this._drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         this._navList = (ListView) findViewById(R.id.nav_list);
 
@@ -88,12 +88,16 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
 
         this._fragmentManager = getSupportFragmentManager();
 
+        // default to home screen
         this._lastClickedPosition = 0;
         // default selection
         loadSelection(0);
 
     }
 
+    /**
+     * Logout
+     */
     private void safeLogout() {
         Intent loginPage = new Intent(DrawerActivity.this, LoginPageActivity.class);
         startActivity(loginPage);
@@ -102,6 +106,11 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
         }
     }
 
+    /**
+     * Loads the specified fragment
+     * @param fragment fragment to load
+     * @param fragmentName id of the fragment
+     */
     private void loadFragment(Fragment fragment, int fragmentName) {
         this._fragmentTransaction.replace(R.id.fragment_holder, fragment);
         this._fragmentTransaction.commit();
@@ -110,6 +119,10 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
         imm.hideSoftInputFromWindow((findViewById(R.id.fragment_holder)).getWindowToken(), 0);
     }
 
+    /**
+     * Loads the fragment based on which item is selected
+     * @param choice item selected
+     */
     private void loadSelection(int choice) {
         this._fragmentTransaction = this._fragmentManager.beginTransaction();
         switch (choice) {

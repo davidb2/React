@@ -55,15 +55,15 @@ import com.microsoft.projectoxford.face.contract.*;
 import com.microsoft.projectoxford.face.rest.ClientException;
 import com.microsoft.projectoxford.face.rest.WebServiceRequest;
 
+/**
+ * Register page
+ */
 public class RegisterPageActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
     private final String USERS = "users";
     private final int NUM_LEN = 10;
-
-
     private DatabaseReference _rootReference;
-
     private Bitmap _profilePic;
     private ScrollView _rootScrollView;
     private AppCompatButton _registerButton, _inputProfilePic;
@@ -72,11 +72,8 @@ public class RegisterPageActivity extends AppCompatActivity {
     private User _newUser;
     private FirebaseAuth _auth;
     private FirebaseAuth.AuthStateListener _authListener;
-
-
     private Face _face;
     private FaceServiceClient _faceServiceClient;
-
     private TextWatcher _defaultTextWatcher;
 
     @Override
@@ -141,16 +138,12 @@ public class RegisterPageActivity extends AppCompatActivity {
         };
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
-
         _registerButton.setEnabled(false);
         addTextChangedListeners();
         _auth.addAuthStateListener(_authListener);
-
-
     }
 
     @Override
@@ -183,6 +176,7 @@ public class RegisterPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent loginPage = new Intent(RegisterPageActivity.this, LoginPageActivity.class);
+                // go to login page
                 startActivity(loginPage);
             }
         });
@@ -194,9 +188,18 @@ public class RegisterPageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Checks whether the supplied EditText is empty
+     * @param editText the EditText in question
+     * @return whether or not it is empty
+     */
     private boolean isEmpty(EditText editText) {
         return editText.getText().toString().length() == 0;
     }
+
+    /**
+     * grey out or color the register button based on input fields
+     */
     private void updateRegisterButton() {
         updateUnderlineColor();
         EditText[] editTexts = {
@@ -232,6 +235,9 @@ public class RegisterPageActivity extends AppCompatActivity {
         _registerButton.setEnabled(true);
     }
 
+    /**
+     * attempts to create a new account
+     */
     private void tryCreateAccount() {
         if (this._face == null) {
             Toast.makeText(getApplicationContext(), "Please upload an image", Toast.LENGTH_SHORT).show();
@@ -253,10 +259,17 @@ public class RegisterPageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * On account creation failure
+     */
     private void onCreateAccountFailure() {
         // do nothing
     }
 
+    /**
+     * Let user choose gallery or camera
+     * TODO: Fix camera bug!
+     */
     private void letUserChoosePhoto() {
         // source: http://stackoverflow.com/questions/2708128/single-intent-to-let-user-take-picture-or-pick-image-from-gallery-in-android
         Intent picIntent = new Intent();
@@ -293,6 +306,9 @@ public class RegisterPageActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If account creation was successful
+     */
     private void onCreateAccountSuccess() {
         // logout
         FirebaseAuth.getInstance().signOut();
@@ -300,6 +316,9 @@ public class RegisterPageActivity extends AppCompatActivity {
         startActivity(loginPage);
     }
 
+    /**
+     * Gathers info for creating account
+     */
     private void createAccount() {
         // something was wrong with the picture
         if (this._face == null) {
@@ -389,6 +408,10 @@ public class RegisterPageActivity extends AppCompatActivity {
         return _face;
     }
 
+    /**
+     * Create Microsoft Face database for storing and training faces
+     * @param user the current user
+     */
     private void createPersonGroup(final User user) {
         AsyncTask<Void, Void, Void> asyncTask =
                 new AsyncTask<Void, Void, Void>() {
@@ -419,6 +442,9 @@ public class RegisterPageActivity extends AppCompatActivity {
         asyncTask.execute();
     }
 
+    /**
+     * Changes password underline color based on password "strength"
+     */
     private void updateUnderlineColor() {
         int index = this._inputPassword.getText().toString().length();
         String hexColor =

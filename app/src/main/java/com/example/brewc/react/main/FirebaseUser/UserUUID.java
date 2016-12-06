@@ -3,11 +3,12 @@ package com.example.brewc.react.main.FirebaseUser;
 import java.util.UUID;
 
 /**
- * Created by brewc on 12/4/2016.
+ * Part of UserFace
  */
 
 public class UserUUID {
     private long leastSignificantBits, mostSignificantBits;
+
     public UserUUID(long leastSignificantBits, long mostSignificantBits) {
         this.leastSignificantBits = leastSignificantBits;
         this.mostSignificantBits = mostSignificantBits;

@@ -17,7 +17,7 @@ import com.example.brewc.react.main.Utilities.Photo;
 import java.util.List;
 
 /**
- *
+ * Custom ArrayAdapter for grid images
  */
 
 public class ImageAdapter extends ArrayAdapter<Photo> {

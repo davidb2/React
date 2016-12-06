@@ -1,7 +1,7 @@
 package com.example.brewc.react.main.Utilities;
 
 /**
- *
+ * Para colores
  */
 
 public class ColorUtilities {

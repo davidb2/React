@@ -7,8 +7,6 @@ import com.microsoft.projectoxford.face.contract.FeatureCoordinate;
  */
 
 public class UserFeatureCoordinate extends FeatureCoordinate {
-
-
     private double x, y;
 
     public UserFeatureCoordinate(double x, double y) {

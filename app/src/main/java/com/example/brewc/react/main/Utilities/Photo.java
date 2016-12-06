@@ -4,7 +4,7 @@ import com.example.brewc.react.main.FirebaseUser.UserFace;
 import com.microsoft.projectoxford.face.contract.Face;
 
 /**
- * Photo
+ * Stores a photo
  */
 
 public class Photo {

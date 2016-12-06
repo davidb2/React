@@ -4,7 +4,7 @@ import com.microsoft.projectoxford.face.contract.FaceAttribute;
 import com.microsoft.projectoxford.face.contract.HeadPose;
 
 /**
- * Created by brewc on 12/4/2016.
+ * Part of UserFace
  */
 
 public class UserFaceAttribute extends FaceAttribute {

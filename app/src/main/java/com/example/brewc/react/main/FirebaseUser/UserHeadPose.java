@@ -3,7 +3,7 @@ package com.example.brewc.react.main.FirebaseUser;
 import com.microsoft.projectoxford.face.contract.HeadPose;
 
 /**
- * Created by brewc on 12/4/2016.
+ * Part of UserFace
  */
 
 public class UserHeadPose extends HeadPose {

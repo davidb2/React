@@ -1,7 +1,7 @@
 package com.example.brewc.react.main.FirebaseUser;
 
 /**
- * Created by brewc on 12/4/2016.
+ * Part of UserFace
  */
 
 public class UserFaceLandmarks {

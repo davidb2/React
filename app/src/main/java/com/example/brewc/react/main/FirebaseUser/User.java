@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+
+/**
+ * Stores a user of the application. This is the main object used in firebase
+ */
 public class User {
     private String email, userID, displayName, phoneNumber, profilePicture, bio;
     private UserFace details;

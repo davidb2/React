@@ -35,21 +35,19 @@ public class LoginPageActivity extends AppCompatActivity {
     private final String USERS = "users";
     private final int MIN_PASSWORD_LEN = 4, MAX_PASSWORD_LEN = 10;
 
+    // Vibrate pattern
     private final long[] VIB_PATTERN = {0, 100, 50, 100};
 
     private DatabaseReference _rootReference;
-
     private AppCompatButton _loginButton;
     private EditText _inputEmail, _inputPassword;
     private TextView _linkRegister;
-
-    public FirebaseAuth _auth;
+    private FirebaseAuth _auth;
     private FirebaseAuth.AuthStateListener _authListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         // remove title bar and make full screen
         // source: http://stackoverflow.com/questions/30746109/how-to-remove-title-bar-from-activity-extending-actionbaractivity-or-appcompatac
@@ -151,8 +149,6 @@ public class LoginPageActivity extends AppCompatActivity {
         }
     }
 
-    // implementation of this: http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/
-
     /**
      * attempts to login the user
      */
@@ -170,6 +166,7 @@ public class LoginPageActivity extends AppCompatActivity {
      */
     private void onLoginFail() {
         Toast.makeText(getBaseContext(), "Invalid Credentials", Toast.LENGTH_LONG).show();
+        // vibrate
         Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(VIB_PATTERN, -1);
         Log.v("", "Login Failure :(");
@@ -181,6 +178,7 @@ public class LoginPageActivity extends AppCompatActivity {
     private void onLoginSuccess() {
         Log.v("", "Login Success!");
         Intent homePage = new Intent(LoginPageActivity.this, DrawerActivity.class);
+        // go to home page
         startActivity(homePage);
     }
 
@@ -190,7 +188,6 @@ public class LoginPageActivity extends AppCompatActivity {
      */
     private boolean safetyCheck() {
         String email = getEmail();
-
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Log.e(TAG, "non-valid-email");
             _inputEmail.setError("Enter a valid email address");
@@ -212,16 +209,22 @@ public class LoginPageActivity extends AppCompatActivity {
     }
 
     /**
-     * @return
+     * @return password from EditText
      */
     private String getPassword() {
         return _inputPassword.getText().toString();
     }
 
+    /**
+     * @return email from EditText
+     */
     private String getEmail() {
         return _inputEmail.getText().toString();
     }
 
+    /**
+     * Login off of the main UI thread
+     */
     private class LoginTask extends AsyncTask<Void, Void, Void> {
         private ProgressDialog progressDialog;
         private final int SLEEP_TIME = 500;
