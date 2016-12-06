@@ -1,6 +1,9 @@
 package com.example.brewc.react.main.Fragments;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.brewc.react.R;
 import com.example.brewc.react.main.Adapters.UserAdapter;
@@ -76,6 +81,20 @@ public class ContactsPageFragment extends Fragment {
         this._contacts = new ArrayList<>();
         this._userAdapter = new UserAdapter(getContext(), R.layout.list_item_user, this._contacts);
         this._listView.setAdapter(this._userAdapter);
+        this._listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                SimplifiedUser simplifiedUser = (SimplifiedUser) _listView.getItemAtPosition(position);
+                String phoneNumber = simplifiedUser.getPhoneNumber();
+                // copy password to clipboard
+                ClipboardManager clipboard =
+                        (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Phone Number", phoneNumber);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(getActivity(), "Copied phone number to clipboard", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
 
         return rootView;
     }

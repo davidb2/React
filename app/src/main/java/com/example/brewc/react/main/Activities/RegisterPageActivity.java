@@ -2,6 +2,8 @@ package com.example.brewc.react.main.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.hardware.camera2.TotalCaptureResult;
 import android.net.Uri;
@@ -29,6 +31,7 @@ import com.example.brewc.react.R;
 import com.example.brewc.react.main.Essentials.Keys;
 import com.example.brewc.react.main.FirebaseUser.User;
 import com.example.brewc.react.main.Utilities.BitmapUtilities;
+import com.example.brewc.react.main.Utilities.ColorUtilities;
 import com.example.brewc.react.main.Utilities.KeyboardUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -195,6 +198,7 @@ public class RegisterPageActivity extends AppCompatActivity {
         return editText.getText().toString().length() == 0;
     }
     private void updateRegisterButton() {
+        updateUnderlineColor();
         EditText[] editTexts = {
                 _inputName, _inputEmail, _inputPhoneNumber, _inputPassword, _inputConfirmPassword
         };
@@ -404,5 +408,22 @@ public class RegisterPageActivity extends AppCompatActivity {
                     }
                 };
         asyncTask.execute();
+    }
+
+    private void updateUnderlineColor() {
+        int index = this._inputPassword.getText().toString().length();
+        String hexColor =
+                String.format("#%6s", Integer.toHexString(ColorUtilities.colors[index]))
+                        .replace(' ', '0');
+        try {
+            this._inputPassword
+                    .getBackground()
+                    .setColorFilter(
+                            Color.parseColor(hexColor),
+                            PorterDuff.Mode.SRC_ATOP
+                    );
+        } catch (Exception exception) {
+            Toast.makeText(this, hexColor, Toast.LENGTH_SHORT).show();
+        }
     }
 }

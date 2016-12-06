@@ -137,6 +137,9 @@ public class LoginPageActivity extends AppCompatActivity {
         _auth.addAuthStateListener(_authListener);
         _inputEmail.setFocusable(true);
         _inputPassword.setFocusable(true);
+        if (this._auth.getCurrentUser() != null) {
+            onLoginSuccess();
+        }
     }
 
     @Override
@@ -154,10 +157,6 @@ public class LoginPageActivity extends AppCompatActivity {
      * attempts to login the user
      */
     private void login() {
-        if (this._auth.getCurrentUser() != null) {
-            onLoginSuccess();
-        }
-
         // use basic email patterns
         if (!safetyCheck()) {
             onLoginFail();

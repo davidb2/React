@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.util.Base64;
 
 import com.example.brewc.react.main.Utilities.Photo;
+import com.google.firebase.database.Exclude;
 import com.microsoft.projectoxford.face.contract.Face;
 
 import java.io.ByteArrayOutputStream;
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 public class User {
     private String email, userID, displayName, phoneNumber, profilePicture, bio;
-    private Face details;
+    private UserFace details;
     private Map<String, Photo> database;
     private List<String> contacts;
     private UserUUID personId;
@@ -33,7 +34,7 @@ public class User {
         this.email = email.trim();
         this.userID = userID;
         this.displayName = displayName.trim();
-        this.details = details;
+        this.details = new UserFace(details);
         this.database = new HashMap<>();
         this.contacts = new ArrayList<String>();
         this.phoneNumber = phoneNumber.trim().replaceAll("[^0-9]", "");
@@ -42,6 +43,7 @@ public class User {
         this.personId = null;
     }
 
+    @Exclude
     public void addFaceToDatabase(String photo, Face face) {
         this.database.put("f9e8fu398afuw9", new Photo(photo, new UserFace(face)));
     }
@@ -58,7 +60,7 @@ public class User {
         return this.displayName;
     }
 
-    public Face getDetails() {
+    public UserFace getDetails() {
         return this.details;
     }
 
@@ -82,10 +84,12 @@ public class User {
         return this.bio;
     }
 
+    @Exclude
     public void setBio(String message) {
         this.bio = message;
     }
 
+    @Exclude
     public void addContact() {
         this.contacts.add("DvMzHKD0fdbjAVUCw9a5XJZEeYb2");
     }
@@ -94,6 +98,7 @@ public class User {
         return this.personId;
     }
 
+    @Exclude
     public void setPersonId(UUID uuid) {
         this.personId = new UserUUID(uuid.getLeastSignificantBits(), uuid.getMostSignificantBits());
     }
