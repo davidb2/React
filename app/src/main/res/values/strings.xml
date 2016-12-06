@@ -20,4 +20,7 @@
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
     <string name="bio_hint">Enter your bio here</string>
+    <string name="log_out">Log out</string>
+    <string name="match">Match!</string>
+    <string name="default_name">John Doe</string>
 </resources>

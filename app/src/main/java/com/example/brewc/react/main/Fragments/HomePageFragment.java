@@ -104,8 +104,8 @@ public class HomePageFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
         this._userProfileNameRef.setValue(this._inputName.getText().toString().trim());
         this._userProfileBioRef.setValue(this._inputBio.getText().toString().trim());
     }

@@ -1,6 +1,7 @@
 package com.example.brewc.react.main.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +28,9 @@ import com.example.brewc.react.main.Fragments.ContactsPageFragment;
 import com.example.brewc.react.main.Fragments.DatabasePageFragment;
 import com.example.brewc.react.main.Fragments.HomePageFragment;
 import com.example.brewc.react.main.Fragments.ReactPageFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +41,10 @@ import java.util.Set;
  */
 
 public class DrawerActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+
+    private final int HOME_POS = 0;
+
+    private FirebaseAuth _auth;
     private ActionBarDrawerToggle _actionBarDrawerToggle;
     private DrawerLayout _drawerLayout;
     private ListView _navList;
@@ -48,6 +57,7 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_layout);
 
+        _auth = FirebaseAuth.getInstance();
 
         this._drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         this._navList = (ListView) findViewById(R.id.nav_list);
@@ -82,6 +92,14 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
         // default selection
         loadSelection(0);
 
+    }
+
+    private void safeLogout() {
+        Intent loginPage = new Intent(DrawerActivity.this, LoginPageActivity.class);
+        startActivity(loginPage);
+        if (this._auth.getCurrentUser() != null) {
+            this._auth.signOut();
+        }
     }
 
     private void loadFragment(Fragment fragment, int fragmentName) {
@@ -130,8 +148,8 @@ public class DrawerActivity extends ActionBarActivity implements AdapterView.OnI
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.log_out) {
+            safeLogout();
         } else if (id == android.R.id.home) {
             if (this._drawerLayout.isDrawerOpen(this._navList)) {
                 this._drawerLayout.closeDrawer(this._navList);

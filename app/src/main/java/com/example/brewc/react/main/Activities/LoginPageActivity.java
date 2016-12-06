@@ -154,6 +154,10 @@ public class LoginPageActivity extends AppCompatActivity {
      * attempts to login the user
      */
     private void login() {
+        if (this._auth.getCurrentUser() != null) {
+            onLoginSuccess();
+        }
+
         // use basic email patterns
         if (!safetyCheck()) {
             onLoginFail();

@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.util.AsyncListUtil;
 import android.support.v7.widget.AppCompatButton;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
@@ -34,6 +35,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -64,7 +66,7 @@ public class RegisterPageActivity extends AppCompatActivity {
     private AppCompatButton _registerButton, _inputProfilePic;
     private EditText _inputEmail, _inputPassword, _inputConfirmPassword, _inputName, _inputPhoneNumber;
     private TextView _linkLogin;
-
+    private User _newUser;
     private FirebaseAuth _auth;
     private FirebaseAuth.AuthStateListener _authListener;
 
@@ -78,6 +80,7 @@ public class RegisterPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this._newUser = null;
 
         // remove title bar and make full screen
         // source: http://stackoverflow.com/questions/30746109/how-to-remove-title-bar-from-activity-extending-actionbaractivity-or-appcompatac
@@ -97,7 +100,7 @@ public class RegisterPageActivity extends AppCompatActivity {
         _inputPassword        = (EditText) findViewById(R.id.input_password);
         _inputConfirmPassword = (EditText) findViewById(R.id.input_confirm_password);
         _registerButton       = (AppCompatButton) findViewById(R.id.btn_signup);
-        _linkLogin         = (TextView) findViewById(R.id.link_login);
+        _linkLogin            = (TextView) findViewById(R.id.link_login);
         _rootScrollView       = (ScrollView) findViewById(R.id.root_scroll_view);
 
         // _keyboardUtil = new KeyboardUtil(RegisterPageActivity.this, _rootScrollView.getChildAt(0));
@@ -302,9 +305,10 @@ public class RegisterPageActivity extends AppCompatActivity {
         String name = _inputName.getText().toString();
         String phoneNumber = _inputPhoneNumber.getText().toString();
         Face details = this._face;
-        User newUser = new User(email, userID, name, details, phoneNumber, BitmapUtilities.bitmapToBase64(this._profilePic));
-        newUser.addContact();
-        _rootReference.child(USERS).child(userID).setValue(newUser);
+        this._newUser = new User(email, userID, name, details, phoneNumber, BitmapUtilities.bitmapToBase64(this._profilePic));
+        _newUser.addContact();
+        _newUser.addFaceToDatabase(_newUser.getProfilePicture(), _newUser.getDetails());
+        createPersonGroup(_newUser);
     }
 
     /**
@@ -376,5 +380,29 @@ public class RegisterPageActivity extends AppCompatActivity {
                 };
         detectTask.execute(inputStream);
         return _face;
+    }
+
+    private void createPersonGroup(final User user) {
+        AsyncTask<Void, Void, Void> asyncTask =
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            _faceServiceClient.createPersonGroup(user.getUserID().toLowerCase(), "group", "empty");
+                            CreatePersonResult personId =
+                                    _faceServiceClient.createPerson(user.getUserID().toLowerCase(), "person", "comments");
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            String userID = user.getUid();
+                            _newUser.setPersonId(personId.personId);
+                            _rootReference.child(USERS).child(userID).setValue(_newUser);
+                            Log.v(TAG, "Created new user " + userID + "!");
+                        } catch (Exception exception) {
+                            Log.e("no", exception.getMessage());
+                            exception.printStackTrace();
+                        }
+                        return null;
+                    }
+                };
+        asyncTask.execute();
     }
 }
