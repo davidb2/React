@@ -23,7 +23,7 @@
                 android:contentDescription="@null"
                 android:src="@drawable/bg_image" />
 
-            <!-- user profile picture -->
+            <!-- user profile pic -->
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_profile_photo"
                 android:layout_width="150dp"
