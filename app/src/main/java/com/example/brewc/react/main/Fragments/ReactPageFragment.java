@@ -90,7 +90,7 @@ public class ReactPageFragment extends Fragment {
         // nothing
     }
 
-    // This is called when the activity to which this fragment is attached is created
+    // This is called when the activity to which this fragment is attached is created.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
